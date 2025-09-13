@@ -2,7 +2,7 @@
 
 A comprehensive Flask web application that implements user registration with email verification using OTP (One-Time Password) codes. This dynamic app manager to test because this is only quicly check the app manager works or not and before you code to test here.
 
-### If you need the Email Authentication OTP System, visit here https://github.com/ASHIK27445/Flash-Outh  
+### If you need the Email Authentication OTP System(for your project), visit here https://github.com/ASHIK27445/Flash-Outh  
 ---
 
 ## ✨ Highlighted Feature: Dynamic Email Configuration (It's for test only)
