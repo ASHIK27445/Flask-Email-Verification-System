@@ -4,11 +4,13 @@ A comprehensive Flask web application that implements user registration with ema
 
 ---
 
-## ✨ Highlighted Feature: Dynamic Email Configuration
+## ✨ Highlighted Feature: Dynamic Email Configuration (It's for test only)
 **Most Notable Feature:**  
 This application includes a unique dynamic email configuration system that allows users to input their SMTP credentials directly through the web interface.  
 
 Unlike traditional systems that require hardcoded email settings or environment variables, this implementation enables **real-time configuration of email settings** without restarting the application.
+
+## If you need the email authentication otp system go to this link https://github.com/ASHIK27445/Flash-Outh
 
 ### 🔧 How It Works
 1. Users visit the homepage and input their email service credentials  
