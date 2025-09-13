@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Login System with OTP</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .alert {
+            transition: opacity 0.5s ease;
+        }
+        .countdown {
+            font-weight: bold;
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">Flask OTP Login</a>
+            <div class="navbar-nav ms-auto">
+                {% if session.user_id %}
+                    <span class="navbar-text me-3">Hello, {{ session.username }}</span>
+                    <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+                    <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                {% else %}
+                    <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                    <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+<script>
+// Store verification email in sessionStorage when available
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if we're on a verification page and have an email parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const email = urlParams.get('email');
+    
+    if (email && (window.location.pathname === '/verify' || window.location.pathname === '/resend-otp')) {
+        sessionStorage.setItem('verify_email', email);
+    }
+});
+
+// Clear all stored data when the page is closed or refreshed
+// But preserve the verification email if we're in the middle of OTP verification
+window.addEventListener('beforeunload', function() {
+    // Check if we're in the OTP verification process
+    const isVerifying = window.location.pathname === '/verify' || 
+                        window.location.pathname === '/resend-otp';
+    
+    // Save the verification email if we're in the verification process
+    const verifyEmail = sessionStorage.getItem('verify_email');
+    
+    // Clear session storage
+    sessionStorage.clear();
+    
+    // Restore the verification email if we're in the verification process
+    if (isVerifying && verifyEmail) {
+        sessionStorage.setItem('verify_email', verifyEmail);
+    }
+    
+    // Send a request to clear server session but preserve verification data
+    fetch('/clear-session', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            preserve_verification: isVerifying
+        }),
+        keepalive: true
+    }).catch(error => console.error('Error clearing session:', error));
+});
+</script>
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html>

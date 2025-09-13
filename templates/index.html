@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <!-- Setup Section on the Left -->
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Email Setup</h5>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info mb-3">
+                    <h6>📧 Before You Begin:</h6>
+                    <small>
+                        <ul class="mb-0 ps-3">
+                            <li>Configure your email settings first</li>
+                            <li>For Gmail, use an App Password (not your regular password)</li>
+                            <li>Settings are saved until server restarts</li>
+                        </ul>
+                    </small>
+                </div>
+                
+                <form id="emailConfigForm">
+                    <div class="mb-3">
+                        <label for="mail_username" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="mail_username" 
+                               name="mail_username" placeholder="your.email@gmail.com" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="mail_password" class="form-label">App Password</label>
+                        <input type="password" class="form-control" id="mail_password" 
+                               name="mail_password" placeholder="Your app password" required>
+                        <div class="form-text">
+                            <a href="https://support.google.com/accounts/answer/185833" target="_blank">
+                                How to create Gmail App Password
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="mail_default_sender" class="form-label">Sender Name</label>
+                        <input type="text" class="form-control" id="mail_default_sender" 
+                               name="mail_default_sender" placeholder="Your Name <your.email@gmail.com>" required>
+                        <div class="form-text">
+                            Format: Name &lt;email@domain.com&gt;
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-100">
+                        💾 Save Email Configuration
+                    </button>
+                </form>
+                
+                <hr>
+                
+                <div id="currentConfig" class="d-none">
+                    <h6>✅ Current Configuration:</h6>
+                    <ul class="list-group">
+                        <li class="list-group-item" id="configUsername">Email: </li>
+                        <li class="list-group-item" id="configPassword">Password: ********</li>
+                        <li class="list-group-item" id="configSender">Sender: </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Database Management Card -->
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="card-title">Database Management</h5>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <h6>⚠️ Warning:</h6>
+                    <small>This will permanently delete ALL users from the database. This action cannot be undone.</small>
+                </div>
+                
+                <button type="button" class="btn btn-danger w-100" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
+                    🗑️ Delete All Users
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content on the Right -->
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h1 class="text-center mb-0">Welcome to Auth System</h1>
+            </div>
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <p class="lead">A complete authentication system with email verification</p>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card bg-light">
+                            <div class="card-body text-center">
+                                <h5>🚀 Get Started</h5>
+                                <ol class="text-start">
+                                    <li>Configure email settings (left)</li>
+                                    <li>Register a new account</li>
+                                    <li>Check email for verification code</li>
+                                    <li>Verify your account</li>
+                                    <li>Login to access dashboard</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card bg-light">
+                            <div class="card-body text-center">
+                                <h5>🔧 Features</h5>
+                                <ul class="text-start">
+                                    <li>User registration & login</li>
+                                    <li>Email verification with OTP</li>
+                                    <li>Secure password hashing</li>
+                                    <li>Session management</li>
+                                    <li>Responsive design</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    {% if session.user_id %}
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-success btn-lg me-3">
+                            📊 Go to Dashboard
+                        </a>
+                    {% else %}
+                        <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg me-3">
+                            🔑 Login
+                        </a>
+                        <a href="{{ url_for('register') }}" class="btn btn-outline-primary btn-lg">
+                            📝 Register
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger">
+                    <h6>⚠️ This action cannot be undone!</h6>
+                    <p>Are you sure you want to delete ALL users from the database?</p>
+                    <p class="mb-0">All user accounts, including verified ones, will be permanently removed.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Yes, Delete All Users</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('emailConfigForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    
+    fetch('/update-email-config', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update the displayed configuration
+            document.getElementById('configUsername').textContent = 'Email: ' + data.config.MAIL_USERNAME;
+            document.getElementById('configSender').textContent = 'Sender: ' + data.config.MAIL_DEFAULT_SENDER;
+            document.getElementById('currentConfig').classList.remove('d-none');
+            
+            alert('Email configuration saved successfully!');
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while saving the configuration.');
+    });
+});
+
+// Delete all users functionality
+document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+    fetch('/delete-all-users', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('All users have been deleted successfully.');
+            // Close the modal
+            bootstrap.Modal.getInstance(document.getElementById('confirmDeleteModal')).hide();
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while deleting users.');
+    });
+});
+</script>
+{% endblock %}
