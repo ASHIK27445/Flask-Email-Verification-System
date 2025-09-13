@@ -1,7 +1,8 @@
 # Flask Email Verification System
 
-A comprehensive Flask web application that implements user registration with email verification using OTP (One-Time Password) codes.
+A comprehensive Flask web application that implements user registration with email verification using OTP (One-Time Password) codes. This dynamic app manager to test because this is only quicly check the app manager works or not and before you code to test here.
 
+### If you need the Email Authentication OTP System, visit here https://github.com/ASHIK27445/Flash-Outh  
 ---
 
 ## ✨ Highlighted Feature: Dynamic Email Configuration (It's for test only)
@@ -10,7 +11,7 @@ This application includes a unique dynamic email configuration system that allow
 
 Unlike traditional systems that require hardcoded email settings or environment variables, this implementation enables **real-time configuration of email settings** without restarting the application.
 
-## If you need the email authentication otp system go to this link https://github.com/ASHIK27445/Flash-Outh
+
 
 ### 🔧 How It Works
 1. Users visit the homepage and input their email service credentials  
